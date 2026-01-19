@@ -11,30 +11,6 @@ before:
     # Ensure dependencies are clean and up-to-date
     - go mod tidy
 
-builds:
-  - main: ./cmd/quick-share/main.go
-    binary: quick-share
-    
-    # Disable CGO to ensure the binary is statically linked (runs on any machine without dependencies)
-    env:
-      - CGO_ENABLED=0
-    
-    # Target Operating Systems
-    goos:
-      - linux
-      - windows
-      - darwin # macOS
-    
-    # Target Architectures
-    goarch:
-      - amd64 # Standard Intel/AMD processors
-      - arm64 # Apple Silicon (M1/M2) & Linux ARM
-    
-    # Exclude specific combinations that are rarely used/problematic
-    ignore:
-      - goos: windows
-        goarch: arm64
-
 # Archive configuration (Compressing binaries into zip/tar.gz)
 archives:
   - format: tar.gz
