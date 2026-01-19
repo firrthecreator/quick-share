@@ -1,0 +1,133 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # Set up Go environment
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+      
+      # Download all Go module dependencies
+      - name: Download Go dependencies
+        run: go mod download
+      
+      # Run all tests to ensure quality before release
+      - name: Run tests
+        run: go test -v -race ./...
+
+  build-and-release:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      # Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      # Set up Go environment
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+      
+      # Download all Go module dependencies
+      - name: Download Go dependencies
+        run: go mod download
+      
+      # Get the tag name from the ref
+      - name: Get tag name
+        id: tag
+        run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      
+      # Build for Linux
+      - name: Build for Linux amd64
+        run: |
+          go build -o quick-share-linux-amd64 \
+            -ldflags="-X main.Version=${{ steps.tag.outputs.tag }}" \
+            ./cmd/quick-share
+        env:
+          GOOS: linux
+          GOARCH: amd64
+      
+      # Build for Linux ARM64
+      - name: Build for Linux ARM64
+        run: |
+          go build -o quick-share-linux-arm64 \
+            -ldflags="-X main.Version=${{ steps.tag.outputs.tag }}" \
+            ./cmd/quick-share
+        env:
+          GOOS: linux
+          GOARCH: arm64
+      
+      # Build for macOS Intel
+      - name: Build for macOS Intel
+        run: |
+          go build -o quick-share-darwin-amd64 \
+            -ldflags="-X main.Version=${{ steps.tag.outputs.tag }}" \
+            ./cmd/quick-share
+        env:
+          GOOS: darwin
+          GOARCH: amd64
+      
+      # Build for macOS Apple Silicon
+      - name: Build for macOS ARM64
+        run: |
+          go build -o quick-share-darwin-arm64 \
+            -ldflags="-X main.Version=${{ steps.tag.outputs.tag }}" \
+            ./cmd/quick-share
+        env:
+          GOOS: darwin
+          GOARCH: arm64
+      
+      # Build for Windows
+      - name: Build for Windows
+        run: |
+          go build -o quick-share-windows-amd64.exe \
+            -ldflags="-X main.Version=${{ steps.tag.outputs.tag }}" \
+            ./cmd/quick-share
+        env:
+          GOOS: windows
+          GOARCH: amd64
+      
+      # Create checksums for all built binaries
+      - name: Generate checksums
+        run: |
+          sha256sum quick-share-* > checksums.txt
+          cat checksums.txt
+      
+      # Create a GitHub release with all built binaries
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            quick-share-linux-amd64
+            quick-share-linux-arm64
+            quick-share-darwin-amd64
+            quick-share-darwin-arm64
+            quick-share-windows-amd64.exe
+            checksums.txt
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
