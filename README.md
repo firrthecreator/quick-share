@@ -1,7 +1,6 @@
 # Quick Share
 
 ![CI Pipeline](https://github.com/firrthecreator/quick-share/actions/workflows/ci.yml/badge.svg)
-![Release](https://img.shields.io/github/v/release/firrthecreator/quick-share)
 [![Go Report Card](https://goreportcard.com/badge/github.com/firrthecreator/quick-share)](https://goreportcard.com/report/github.com/firrthecreator/quick-share)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -18,17 +17,13 @@ A lightweight, high-performance CLI tool written in Go that enables instant file
 
 ## Installation
 
-### Option 1: Download Pre-built Binary (Recommended)
-
-Visit the [Releases Page](https://github.com/firrthecreator/quick-share/releases) and download the binary for your operating system.
-
-### Option 2: Install via Go
+### Option 1: Install via Go
 
 ```bash
 go install github.com/firrthecreator/quick-share/cmd/quick-share@latest
 ```
 
-### Option 3: Build from Source
+### Option 2: Build from Source
 
 ```bash
 git clone https://github.com/firrthecreator/quick-share.git
@@ -73,14 +68,12 @@ This project follows the [Standard Go Project Layout](https://github.com/golang-
 
 ```
 quick-share/
-├── .github/              # GitHub Actions (CI/CD workflows)
 ├── cmd/
 │   └── quick-share/      # Main entry point and argument parsing
 ├── internal/
 │   ├── network/          # Network utilities (IP detection)
 │   ├── server/           # HTTP handlers (upload/download logic)
 │   └── ui/               # Terminal UI and QR code generation
-├── .goreleaser.yaml      # Release automation configuration
 └── go.mod                # Dependency management
 ```
 
