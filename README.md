@@ -1,7 +1,7 @@
 # Quick Share
 
 ![CI Pipeline](https://github.com/firrthecreator/quick-share/actions/workflows/ci.yml/badge.svg)
-[![Go Report Card](https://goreportcard.com/badge/github.com/firrthecreator/quick-share)](https://goreportcard.com/report/github.com/firrthecreator/quick-share)
+[![Go Report Card](https://goreportcard.com/badge/github.com/firrthecreator/quick-share?style=flat&v=1)](https://goreportcard.com/report/github.com/firrthecreator/quick-share)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 A lightweight, high-performance CLI tool written in Go that enables instant file sharing between devices on the same network (Wi-Fi/LAN) via HTTP. Quick Share automatically detects your local IP address, generates a QR code in your terminal, and allows seamless file transfer without any additional setup on the receiving device.
