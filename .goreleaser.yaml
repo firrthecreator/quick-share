@@ -44,4 +44,12 @@ changelog:
       - '^test:'
       - '^ci:'
       - '^chore:'
-      
+
+# Release configuration (Publishing to GitHub, GitLab, etc.)
+release:
+  github:
+    owner: firrthecreator
+    name: quick-share
+  draft: false
+  prerelease: auto
+  mode: keep-existing
