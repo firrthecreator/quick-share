@@ -1,6 +1,6 @@
 module github.com/firrthecreator/quick-share
 
-go 1.24
+go 1.22
 
 require github.com/mdp/qrterminal/v3 v3.2.1
 
